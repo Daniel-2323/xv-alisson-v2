@@ -1,0 +1,35 @@
+import React from 'react';
+import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Hero, IntroMessage, Countdown, WelcomeMessage } from './components/sections/HeroAndIntro';
+import { Gallery, Reception, DressCode, RSVP, Footer } from './components/sections/EventDetails';
+
+const Home = () => {
+  return (
+    <div className="min-h-screen bg-[color:var(--bg-deep)] text-[color:var(--cream)] overflow-x-hidden">
+      <Hero />
+      <IntroMessage />
+      <Countdown />
+      <WelcomeMessage />
+      <Gallery />
+      <Reception />
+      <DressCode />
+      <RSVP />
+      <Footer />
+    </div>
+  );
+};
+
+function App() {
+  return (
+    <div className="App">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
+}
+
+export default App;
