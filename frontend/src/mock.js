@@ -1,8 +1,8 @@
 // Mock data - editable placeholder content for the XV años invitation
 export const mockData = {
   quinceanera: {
-    firstName: 'Alison',
-    middleName: 'Citlali',
+    firstName: 'Alisson',
+    middleName: 'Citlalli',
     lastName: 'Fidencio Flores',
     familyLine: 'FIDENCIO  \u00b7  FLORES',
     parents: {
@@ -63,7 +63,7 @@ export const mockData = {
   },
   quote: {
     text: 'Hoy dejo atrás la niñez para comenzar una nueva etapa llena de sueños, ilusiones y esperanza.',
-    author: 'Alison Citlali',
+    author: 'Alisson Citlalli',
   },
   galleryHeader: {
     eyebrow: 'Galería',
