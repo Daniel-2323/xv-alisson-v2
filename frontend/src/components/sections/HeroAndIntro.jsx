@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { ChevronDown, Play } from 'lucide-react';
 import { CrownOrnament, GoldDivider, OrnamentArch, FloatingParticles } from '../Decorations';
 import { mockData } from '../../mock';
 
@@ -145,6 +145,95 @@ export const WelcomeMessage = () => {
             y sus padres, {quinceanera.parents.mother} y {quinceanera.parents.father}
           </p>
         </div>
+      </div>
+    </section>
+  );
+};
+
+
+export const VideoSection = () => {
+  const { video } = mockData;
+  const [playing, setPlaying] = useState(false);
+  const ref = useRef(null);
+
+  const handlePlay = () => {
+    if (!ref.current) return;
+    ref.current.play();
+    setPlaying(true);
+  };
+
+  return (
+    <section className="relative section-bg py-24 md:py-32 overflow-hidden grain">
+      <FloatingParticles density="low" />
+      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+        <p className="section-eyebrow">{video.eyebrow}</p>
+        <h2 className="font-serif-display italic text-5xl md:text-6xl text-gold-gradient mt-4 leading-tight">
+          {video.title}
+        </h2>
+        <div className="mt-6 mb-12"><GoldDivider variant="star" /></div>
+
+        <div className="relative rounded-xl overflow-hidden border border-[color:var(--gold-1)]/25 shadow-[0_20px_60px_rgba(0,0,0,0.55)]">
+          <video
+            ref={ref}
+            src={video.src}
+            poster={video.poster}
+            className="w-full h-auto max-h-[520px] object-cover bg-black"
+            controls={playing}
+            playsInline
+            onPause={() => setPlaying(false)}
+            onEnded={() => setPlaying(false)}
+          />
+          {!playing && (
+            <button
+              type="button"
+              onClick={handlePlay}
+              className="absolute inset-0 flex items-center justify-center group"
+              aria-label="Reproducir video"
+            >
+              <span className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/50" />
+              <span className="relative w-20 h-20 md:w-24 md:h-24 rounded-full bg-gold-gradient flex items-center justify-center shadow-[0_10px_40px_rgba(212,175,55,0.45)] transition-transform duration-300 group-hover:scale-105">
+                <Play size={36} className="text-[color:var(--bg-deep)] ml-1" fill="currentColor" strokeWidth={0} />
+              </span>
+            </button>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+
+export const QuoteSection = () => {
+  const { quote } = mockData;
+  return (
+    <section className="relative section-bg-alt py-24 md:py-28 overflow-hidden">
+      <FloatingParticles density="low" />
+      <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
+        <div className="flex justify-center mb-8">
+          <svg width="34" height="34" viewBox="0 0 24 24" className="text-[color:var(--gold-1)]" aria-hidden>
+            <path
+              d="M12 2 L13.5 8.5 L20 10 L13.5 11.5 L12 18 L10.5 11.5 L4 10 L10.5 8.5 Z M19 4 L19.7 6.3 L22 7 L19.7 7.7 L19 10 L18.3 7.7 L16 7 L18.3 6.3 Z M5 14 L5.6 15.4 L7 16 L5.6 16.6 L5 18 L4.4 16.6 L3 16 L4.4 15.4 Z"
+              fill="currentColor"
+              opacity="0.85"
+            />
+          </svg>
+        </div>
+
+        <p className="font-serif-display italic text-2xl md:text-3xl lg:text-4xl text-[color:var(--cream)] leading-relaxed">
+          &ldquo;{quote.text}&rdquo;
+        </p>
+
+        <div className="flex items-center justify-center gap-3 mt-10">
+          <div className="gold-line w-24" />
+          <svg width="16" height="16" viewBox="0 0 24 24" className="text-[color:var(--gold-1)]" aria-hidden>
+            <path d="M12 3 L13 9 L19 10 L13 11 L12 17 L11 11 L5 10 L11 9 Z" fill="currentColor" />
+          </svg>
+          <div className="gold-line w-24" />
+        </div>
+
+        <p className="font-serif-body italic text-xl md:text-2xl text-gold-gradient mt-6">
+          &mdash; {quote.author}
+        </p>
       </div>
     </section>
   );

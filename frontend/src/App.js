@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Hero, IntroMessage, Countdown, WelcomeMessage } from './components/sections/HeroAndIntro';
+import { Hero, IntroMessage, Countdown, WelcomeMessage, VideoSection, QuoteSection } from './components/sections/HeroAndIntro';
 import { Gallery, Reception, DressCode, RSVP, Footer } from './components/sections/EventDetails';
 
 const Home = () => {
@@ -10,6 +10,8 @@ const Home = () => {
       <Hero />
       <IntroMessage />
       <Countdown />
+      <VideoSection />
+      <QuoteSection />
       <WelcomeMessage />
       <Gallery />
       <Reception />

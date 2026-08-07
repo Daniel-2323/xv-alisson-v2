@@ -8,9 +8,9 @@ export const Gallery = () => {
     <section className="relative section-bg py-24 md:py-32 overflow-hidden grain">
       <FloatingParticles density="low" />
       <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
-        <p className="section-eyebrow">Mi Historia</p>
-        <h2 className="font-serif-display italic text-5xl md:text-6xl text-[color:var(--cream)] mt-4 leading-tight">
-          Momentos que han <span className="block text-gold-gradient not-italic font-bold">marcado mi vida</span>
+        <p className="section-eyebrow">{mockData.galleryHeader.eyebrow}</p>
+        <h2 className="font-serif-display italic text-5xl md:text-6xl text-gold-gradient mt-4 leading-tight">
+          {mockData.galleryHeader.title}
         </h2>
         <p className="font-serif-body italic text-[color:var(--cream-soft)]/60 mt-6 text-lg">— Por Indicar —</p>
 
