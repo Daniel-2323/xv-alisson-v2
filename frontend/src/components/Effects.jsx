@@ -93,7 +93,7 @@ export const Reveal = ({ children, className = '', delay = 0 }) => {
 };
 
 // Floating music toggle button (bottom-left)
-export const MusicToggle = ({ src = 'https://cdn.pixabay.com/audio/2022/10/25/audio_9c3c07e2b0.mp3' }) => {
+export const MusicToggle = ({ src = 'https://customer-assets-gfyr7b9c.emergentagent.net/job_recreate-design/artifacts/nnm5pj39_DUKI%2C%20Bizarrap%20-%20Buscarte%20Lejos_instrumental.mp3' }) => {
   const audioRef = useRef(null);
   const [playing, setPlaying] = useState(false);
 
