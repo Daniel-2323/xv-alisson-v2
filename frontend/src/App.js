@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Hero, IntroMessage, Countdown, WelcomeMessage, VideoSection, QuoteSection } from './components/sections/HeroAndIntro';
 import { Gallery, Reception, DressCode, RSVP, Footer } from './components/sections/EventDetails';
 import { FallingGoldParticles, MusicToggle } from './components/Effects';
+import AdminPage from './pages/AdminPage';
 
 const Home = () => {
   return (
@@ -31,6 +32,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -46,8 +46,7 @@ export const mockData = {
     note: 'Nota: Evitar colores blanco, rojo o rosa intenso. Los colores reservados para la quincea\u00f1era son el verde botella y el dorado.',
   },
   rsvp: {
-    whatsappNumber: '5215555555555', // placeholder
-    maxPasses: 5,
+    whatsappNumber: '5215555555555', // placeholder - editar cuando se tenga el número real
   },
   heroImage:
     'https://images.unsplash.com/photo-1720534670705-9f4b9315528d?auto=format&fit=crop&w=2000&q=80',

@@ -164,14 +164,43 @@ export const RSVP = () => {
   const { rsvp, quinceanera } = mockData;
   const [name, setName] = useState('');
   const [passes, setPasses] = useState(1);
+  const [message, setMessage] = useState('');
+  const [status, setStatus] = useState({ type: 'idle', text: '' });
 
-  const handleConfirm = () => {
-    if (!name.trim()) return;
-    const message = encodeURIComponent(
-      `¡Hola! Confirmo mi asistencia a los XV años de ${quinceanera.firstName} ${quinceanera.middleName}.\nNombre: ${name}\nNúmero de pases: ${passes}`
-    );
-    window.open(`https://wa.me/${rsvp.whatsappNumber}?text=${message}`, '_blank');
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
+  const handleConfirm = async () => {
+    if (!name.trim()) {
+      setStatus({ type: 'error', text: 'Por favor ingresa tu nombre.' });
+      return;
+    }
+    if (passes < 1) {
+      setStatus({ type: 'error', text: 'Debes indicar al menos 1 pase.' });
+      return;
+    }
+    setStatus({ type: 'loading', text: 'Enviando confirmación...' });
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/rsvp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name.trim(), passes: Number(passes), message: message.trim() || null }),
+      });
+      if (!res.ok) throw new Error('Error al confirmar');
+      setStatus({ type: 'success', text: '¡Confirmación registrada! Serás redirigido a WhatsApp.' });
+
+      const waText = encodeURIComponent(
+        `¡Hola! Confirmo mi asistencia a los XV años de ${quinceanera.firstName} ${quinceanera.middleName}.\nNombre: ${name}\nNúmero de pases: ${passes}${message ? `\nMensaje: ${message}` : ''}`
+      );
+      setTimeout(() => {
+        window.open(`https://wa.me/${rsvp.whatsappNumber}?text=${waText}`, '_blank');
+      }, 700);
+    } catch (e) {
+      setStatus({ type: 'error', text: 'No se pudo registrar. Intenta de nuevo.' });
+    }
   };
+
+  const dec = () => setPasses((p) => Math.max(1, Number(p) - 1));
+  const inc = () => setPasses((p) => Math.max(1, Number(p) + 1));
 
   return (
     <section id="rsvp" className="relative section-bg-alt py-24 md:py-32 overflow-hidden grain">
@@ -183,7 +212,7 @@ export const RSVP = () => {
             Confirma tu <span className="block italic text-gold-gradient">Asistencia</span>
           </h2>
           <p className="font-serif-body italic text-lg text-[color:var(--cream-soft)] mt-6 max-w-md mx-auto">
-            Llena el formulario y envíanos tu confirmación directamente por WhatsApp. Esperamos contar con tu presencia.
+            Llena el formulario y envíanos tu confirmación. Recibirás también una copia por WhatsApp.
           </p>
           <div className="h-px w-16 bg-[color:var(--gold-1)]/60 mx-auto mt-6" />
         </div>
@@ -202,35 +231,65 @@ export const RSVP = () => {
 
           <div className="mb-6">
             <label className="section-eyebrow block mb-3">Número de Pases</label>
-            <div className="grid grid-cols-5 gap-2">
-              {Array.from({ length: rsvp.maxPasses }).map((_, i) => {
-                const n = i + 1;
-                return (
-                  <button
-                    key={n}
-                    type="button"
-                    onClick={() => setPasses(n)}
-                    className={`pass-pill ${passes === n ? 'active' : ''}`}
-                  >
-                    {n}
-                  </button>
-                );
-              })}
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={dec}
+                className="w-11 h-11 rounded-md border border-[color:var(--gold-1)]/40 bg-[color:var(--bg-panel)]/60 text-[color:var(--gold-2)] font-serif-display text-2xl leading-none hover:border-[color:var(--gold-1)] transition"
+                aria-label="Restar"
+              >−</button>
+              <input
+                type="number"
+                min={1}
+                className="field-input text-center font-serif-display text-2xl"
+                value={passes}
+                onChange={(e) => {
+                  const v = parseInt(e.target.value, 10);
+                  setPasses(Number.isFinite(v) && v >= 1 ? v : 1);
+                }}
+              />
+              <button
+                type="button"
+                onClick={inc}
+                className="w-11 h-11 rounded-md border border-[color:var(--gold-1)]/40 bg-[color:var(--bg-panel)]/60 text-[color:var(--gold-2)] font-serif-display text-2xl leading-none hover:border-[color:var(--gold-1)] transition"
+                aria-label="Sumar"
+              >+</button>
             </div>
             <p className="font-serif-body italic text-sm text-[color:var(--cream-soft)]/70 mt-3">
-              Selecciona el número de personas que asistirán
+              Indica el número total de personas que asistirán (sin límite)
             </p>
           </div>
 
-          <button onClick={handleConfirm} className="btn-gold-solid w-full mt-4 flex items-center justify-center gap-2">
+          <div className="mb-6">
+            <label className="section-eyebrow block mb-3">Mensaje (opcional)</label>
+            <textarea
+              className="field-input"
+              rows={3}
+              placeholder="Deja un mensaje para la quinceañera..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+          </div>
+
+          <button
+            onClick={handleConfirm}
+            disabled={status.type === 'loading'}
+            className="btn-gold-solid w-full mt-2 flex items-center justify-center gap-2 disabled:opacity-70"
+          >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
               <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 2.09.55 4.13 1.6 5.93L2 22l4.28-1.12a9.86 9.86 0 004.76 1.21h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.79 14.13c-.24.68-1.4 1.29-1.94 1.37-.5.07-1.13.1-1.83-.11-.42-.13-.96-.31-1.66-.61-2.92-1.26-4.83-4.2-4.98-4.39-.15-.19-1.19-1.58-1.19-3.02 0-1.44.76-2.14 1.03-2.44.27-.3.59-.38.79-.38h.57c.18 0 .43-.07.67.51.24.58.83 2 .9 2.15.07.15.12.32.02.51-.09.19-.15.31-.29.48-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.29.75 1.24 1.61 2.01 1.11.99 2.05 1.29 2.34 1.44.29.15.46.12.63-.07.17-.19.72-.84.91-1.13.19-.29.38-.24.64-.15.26.1 1.68.79 1.97.94.29.15.48.22.55.34.07.13.07.72-.17 1.41z" />
             </svg>
-            CONFIRMAR POR WHATSAPP
+            {status.type === 'loading' ? 'ENVIANDO...' : 'CONFIRMAR ASISTENCIA'}
           </button>
 
+          {status.type !== 'idle' && (
+            <p className={`font-serif-body italic text-sm text-center mt-4 ${
+              status.type === 'success' ? 'text-[color:var(--gold-2)]' : status.type === 'error' ? 'text-red-300' : 'text-[color:var(--cream-soft)]'
+            }`}>{status.text}</p>
+          )}
+
           <p className="font-serif-body italic text-xs text-center text-[color:var(--cream-soft)]/60 mt-4">
-            Al confirmar, serás redirigido a WhatsApp con tu información pre-llenada
+            Al confirmar, tu asistencia se registra y serás redirigido a WhatsApp
           </p>
         </div>
       </div>
