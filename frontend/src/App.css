@@ -326,3 +326,106 @@ html { scroll-behavior: smooth; }
   100% { transform: scale(1.05) translateY(0); }
 }
 .hero-kenburns { animation: hero-kenburns 22s ease-in-out infinite; }
+
+/* ============ MOBILE OPTIMIZATIONS ============ */
+@media (max-width: 640px) {
+  /* Hero */
+  #hero h1 {
+    font-size: 3.5rem !important;
+    line-height: 0.95 !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  /* Countdown tiles smaller on phones */
+  .countdown-tile {
+    min-height: 108px;
+    padding: 10px;
+    border-radius: 12px;
+  }
+  .countdown-tile > span:first-child {
+    font-size: 2.5rem !important;
+  }
+
+  /* Section headings smaller on mobile */
+  section h2.font-serif-display {
+    font-size: 2.25rem !important;
+    line-height: 1.1 !important;
+  }
+  section h3.font-serif-display {
+    font-size: 1.5rem !important;
+  }
+
+  /* Quote text */
+  section p.font-serif-display.italic {
+    font-size: 1.35rem !important;
+    line-height: 1.45 !important;
+  }
+
+  /* Body italic text smaller */
+  .font-serif-body {
+    font-size: 1rem !important;
+  }
+
+  /* Reduce section vertical padding */
+  section.section-bg,
+  section.section-bg-alt,
+  footer.section-bg {
+    padding-top: 3.5rem !important;
+    padding-bottom: 3.5rem !important;
+  }
+
+  /* Reduce tracking to fit small screens */
+  .tracking-widest-xl {
+    letter-spacing: 0.22em;
+  }
+
+  /* Dress-code western title */
+  .dress-card {
+    padding: 20px 12px;
+  }
+
+  /* Palette swatch shorter */
+  .palette-swatch {
+    height: 120px;
+  }
+
+  /* Photo placeholder smaller */
+  .photo-placeholder {
+    aspect-ratio: 1 / 1;
+  }
+
+  /* Buttons full width tap targets */
+  .btn-gold-outline {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    padding: 12px 20px;
+  }
+  .btn-gold-solid {
+    padding: 14px 20px;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+  }
+
+  /* Music toggle a bit smaller */
+  .music-toggle {
+    width: 46px;
+    height: 46px;
+    left: 14px;
+    bottom: 14px;
+  }
+}
+
+@media (max-width: 380px) {
+  #hero h1 {
+    font-size: 3rem !important;
+  }
+  section h2.font-serif-display {
+    font-size: 2rem !important;
+  }
+  .countdown-tile {
+    min-height: 96px;
+  }
+  .countdown-tile > span:first-child {
+    font-size: 2.15rem !important;
+  }
+}
