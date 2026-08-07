@@ -6,10 +6,10 @@ export const FallingGoldParticles = ({ count = 28 }) => {
   const items = useMemo(() => {
     return Array.from({ length: count }).map((_, i) => {
       const left = Math.random() * 100;
-      const size = 6 + Math.random() * 12;
+      const size = 8 + Math.random() * 16;
       const duration = 14 + Math.random() * 22;
       const delay = -Math.random() * duration; // negative so they are pre-spread
-      const type = i % 3;
+      const type = i % 5;
       const opacity = 0.35 + Math.random() * 0.45;
       return { left, size, duration, delay, type, opacity, key: i };
     });
@@ -38,6 +38,21 @@ export const FallingGoldParticles = ({ count = 28 }) => {
             {it.type === 2 && (
               <svg width={it.size + 2} height={it.size + 2} viewBox="0 0 12 12" fill="currentColor">
                 <circle cx="6" cy="6" r="1.6" />
+              </svg>
+            )}
+            {it.type === 3 && (
+              /* Cowboy hat */
+              <svg width={it.size + 10} height={it.size + 6} viewBox="0 0 60 44" fill="none">
+                <path d="M18 24 Q22 8 30 8 Q38 8 42 24" stroke="currentColor" strokeWidth="2.4" fill="currentColor" fillOpacity="0.35" />
+                <path d="M6 30 Q30 40 54 30 Q54 34 30 38 Q6 34 6 30 Z" stroke="currentColor" strokeWidth="2.4" fill="currentColor" fillOpacity="0.35" />
+                <path d="M18 26 Q30 22 42 26" stroke="currentColor" strokeWidth="1.4" fill="none" />
+              </svg>
+            )}
+            {it.type === 4 && (
+              /* Cowboy boot */
+              <svg width={it.size + 4} height={it.size + 8} viewBox="0 0 30 40" fill="none">
+                <path d="M8 4 L18 4 L18 26 L28 26 L28 34 L4 34 L4 30 L8 30 Z" stroke="currentColor" strokeWidth="2.2" fill="currentColor" fillOpacity="0.35" />
+                <path d="M8 10 L18 10 M8 16 L18 16" stroke="currentColor" strokeWidth="1.2" />
               </svg>
             )}
           </span>
