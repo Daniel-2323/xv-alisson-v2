@@ -254,3 +254,75 @@ html, body, #root {
 /* Utility fade in on view */
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity 1s ease, transform 1s ease; }
 .reveal.in { opacity: 1; transform: translateY(0); }
+
+/* Smooth scrolling */
+html { scroll-behavior: smooth; }
+
+/* Falling gold particles (continuous ambient effect) */
+@keyframes fall-slow {
+  0%   { transform: translate3d(0, -10vh, 0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 0.7; }
+  90%  { opacity: 0.6; }
+  100% { transform: translate3d(0, 110vh, 0) rotate(360deg); opacity: 0; }
+}
+@keyframes drift-x {
+  0%, 100% { margin-left: 0; }
+  50%      { margin-left: 30px; }
+}
+.falling-particle {
+  position: absolute;
+  top: 0;
+  color: #d4af37;
+  animation-name: fall-slow;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+}
+.falling-particle-inner {
+  display: block;
+  animation: drift-x 6s ease-in-out infinite;
+}
+
+/* Music toggle button */
+.music-toggle {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 60;
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  background: linear-gradient(160deg, rgba(20,55,42,0.95), rgba(10,30,23,0.95));
+  border: 1px solid rgba(212,175,55,0.55);
+  color: #d4af37;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 0 4px rgba(212,175,55,0.08), inset 0 1px 0 rgba(212,175,55,0.25);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+}
+.music-toggle:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 14px 34px rgba(0,0,0,0.55), 0 0 0 6px rgba(212,175,55,0.12), inset 0 1px 0 rgba(212,175,55,0.35);
+}
+.music-toggle.playing::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 999px;
+  border: 1px solid rgba(212,175,55,0.35);
+  animation: ring-pulse 2.4s ease-out infinite;
+}
+@keyframes ring-pulse {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
+/* Hero subtle parallax scale on load */
+@keyframes hero-kenburns {
+  0%   { transform: scale(1.05) translateY(0); }
+  50%  { transform: scale(1.10) translateY(-1%); }
+  100% { transform: scale(1.05) translateY(0); }
+}
+.hero-kenburns { animation: hero-kenburns 22s ease-in-out infinite; }

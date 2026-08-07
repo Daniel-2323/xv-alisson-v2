@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { ImageIcon, MapPin, Calendar, Clock, MapPinned, Sparkles, Info } from 'lucide-react';
+import { ImageIcon, MapPin, Calendar, Clock, MapPinned, Sparkles, Info, Church, GlassWater, Utensils, Heart, Music } from 'lucide-react';
 import { GoldDivider, OrnamentArch, FloatingParticles } from '../Decorations';
+import { Reveal } from '../Effects';
 import { mockData } from '../../mock';
 
 export const Gallery = () => {
@@ -255,5 +256,66 @@ export const Footer = () => {
         </p>
       </div>
     </footer>
+  );
+};
+
+
+const TimelineIcon = ({ name, size = 20 }) => {
+  const map = { sparkle: Sparkles, church: Church, glass: GlassWater, utensils: Utensils, heart: Heart, music: Music };
+  const Cmp = map[name] || Sparkles;
+  return <Cmp size={size} className="text-[color:var(--gold-1)]" />;
+};
+
+export const Timeline = () => {
+  const { timeline } = mockData;
+  return (
+    <section className="relative section-bg-alt py-24 md:py-32 overflow-hidden">
+      <FloatingParticles density="low" />
+      <div className="relative z-10 max-w-4xl mx-auto px-6">
+        <Reveal>
+          <div className="text-center">
+            <p className="section-eyebrow">{timeline.eyebrow}</p>
+            <h2 className="font-serif-display italic text-5xl md:text-6xl text-gold-gradient mt-4 leading-tight">
+              {timeline.title}
+            </h2>
+            <div className="mt-6 mb-14"><GoldDivider variant="star" /></div>
+          </div>
+        </Reveal>
+
+        <div className="relative">
+          {/* Vertical line */}
+          <div
+            className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-px"
+            style={{ background: 'linear-gradient(180deg, transparent, rgba(212,175,55,0.5), transparent)' }}
+          />
+
+          <ul className="space-y-10 md:space-y-14">
+            {timeline.events.map((ev, i) => {
+              const isLeft = i % 2 === 0;
+              return (
+                <li key={ev.time} className="relative grid grid-cols-9 items-center gap-4">
+                  {/* Left card */}
+                  <div className={`col-span-9 md:col-span-4 ${isLeft ? 'md:col-start-1 md:pr-8 md:text-right' : 'md:col-start-6 md:pl-8 md:order-3'}`}>
+                    <Reveal delay={i * 60}>
+                      <div className="inline-block text-left rounded-lg border border-[color:var(--gold-1)]/25 bg-[color:var(--bg-panel)]/70 px-5 py-4 min-w-[220px] backdrop-blur">
+                        <p className="font-serif-display text-2xl text-gold-gradient leading-none">{ev.time}</p>
+                        <p className="font-serif-body italic text-[color:var(--cream-soft)] mt-1">{ev.label}</p>
+                      </div>
+                    </Reveal>
+                  </div>
+
+                  {/* Center icon */}
+                  <div className="hidden md:flex col-span-1 col-start-5 justify-center">
+                    <div className="w-11 h-11 rounded-full bg-[color:var(--bg-panel)] border border-[color:var(--gold-1)]/50 flex items-center justify-center shadow-[0_0_0_4px_rgba(10,30,23,1)]">
+                      <TimelineIcon name={ev.icon} />
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
+    </section>
   );
 };

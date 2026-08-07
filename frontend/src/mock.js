@@ -69,4 +69,16 @@ export const mockData = {
     eyebrow: 'Galería',
     title: 'Recuerdos en imágenes',
   },
+  timeline: {
+    eyebrow: 'Cronograma',
+    title: 'Itinerario del día',
+    events: [
+      { time: '4:30 PM', label: 'Recepción de invitados', icon: 'sparkle' },
+      { time: '5:00 PM', label: 'Ceremonia religiosa', icon: 'church' },
+      { time: '7:00 PM', label: 'Brindis y protocolo', icon: 'glass' },
+      { time: '8:00 PM', label: 'Cena', icon: 'utensils' },
+      { time: '9:00 PM', label: 'Vals', icon: 'heart' },
+      { time: '10:00 PM', label: 'Baile', icon: 'music' },
+    ],
+  },
 };
