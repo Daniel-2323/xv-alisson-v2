@@ -22,8 +22,22 @@ db = client[os.environ['DB_NAME']]
 
 # Admin auth
 ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'alisson2026')
-# In-memory token store (simple session)
-_active_tokens: set = set()
+TOKEN_TTL_HOURS = 12
+
+
+async def _is_valid_token(token: Optional[str]) -> bool:
+    if not token:
+        return False
+    doc = await db.admin_sessions.find_one({"token": token})
+    if not doc:
+        return False
+    created = doc.get("created_at")
+    if isinstance(created, datetime):
+        age_hours = (datetime.utcnow() - created).total_seconds() / 3600
+        if age_hours > TOKEN_TTL_HOURS:
+            await db.admin_sessions.delete_one({"token": token})
+            return False
+    return True
 
 # Create the main app
 app = FastAPI()
@@ -53,8 +67,8 @@ class AdminLoginResponse(BaseModel):
     token: str
 
 
-def require_admin(x_admin_token: Optional[str] = Header(default=None)):
-    if not x_admin_token or x_admin_token not in _active_tokens:
+async def require_admin(x_admin_token: Optional[str] = Header(default=None)):
+    if not await _is_valid_token(x_admin_token):
         raise HTTPException(status_code=401, detail="No autorizado")
     return True
 
@@ -83,7 +97,7 @@ async def admin_login(payload: AdminLogin):
     if payload.password != ADMIN_PASSWORD:
         raise HTTPException(status_code=401, detail="Contraseña incorrecta")
     token = secrets.token_urlsafe(32)
-    _active_tokens.add(token)
+    await db.admin_sessions.insert_one({"token": token, "created_at": datetime.utcnow()})
     return AdminLoginResponse(token=token)
 
 
@@ -95,7 +109,7 @@ async def list_rsvps(_: bool = Depends(require_admin)):
 
 @api_router.get("/admin/stats")
 async def stats(_: bool = Depends(require_admin)):
-    items = await db.rsvps.find().to_list(5000)
+    items = await db.rsvps.find({}, {"passes": 1, "_id": 0}).to_list(5000)
     total_conf = len(items)
     total_passes = sum(int(it.get("passes", 0)) for it in items)
     return {"total_confirmations": total_conf, "total_passes": total_passes}
@@ -111,8 +125,8 @@ async def delete_rsvp(rsvp_id: str, _: bool = Depends(require_admin)):
 
 @api_router.post("/admin/logout")
 async def admin_logout(_: bool = Depends(require_admin), x_admin_token: Optional[str] = Header(default=None)):
-    if x_admin_token in _active_tokens:
-        _active_tokens.discard(x_admin_token)
+    if x_admin_token:
+        await db.admin_sessions.delete_one({"token": x_admin_token})
     return {"ok": True}
 
 
