@@ -137,23 +137,38 @@ export const DressCode = () => {
           <div className="h-px w-16 bg-[color:var(--gold-1)]/60 mx-auto mt-3" />
         </div>
 
-        <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 max-w-5xl mx-auto">
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
           {dressCode.palette.map((c) => (
             <div key={c.name} className="palette-swatch relative" style={{ background: c.hex.startsWith('linear') ? c.hex : c.hex }}>
               <div className="absolute inset-0 flex flex-col justify-end p-4">
                 <p className="font-sans tracking-wider-xs text-xs font-semibold uppercase" style={{ color: c.text }}>{c.name}</p>
                 <p className="font-serif-body italic text-sm" style={{ color: c.text, opacity: 0.85 }}>{c.role}</p>
               </div>
-              {c.name === 'Dorado' && (
-                <Sparkles size={20} className="absolute top-3 right-3 text-white/70" />
-              )}
             </div>
           ))}
         </div>
 
-        <div className="mt-10 max-w-3xl mx-auto flex items-start gap-3 p-4 rounded-lg border border-[color:var(--gold-1)]/20 bg-[color:var(--bg-panel)]/40">
-          <Info size={18} className="text-[color:var(--gold-1)] flex-shrink-0 mt-0.5" />
-          <p className="font-sans text-sm text-[color:var(--cream-soft)]"><span className="font-semibold text-[color:var(--gold-2)]">Nota:</span> {dressCode.note}</p>
+        {/* Reserved colors */}
+        <div className="mt-16 text-center">
+          <p className="section-eyebrow">Colores Reservados</p>
+          <p className="font-serif-body italic text-[color:var(--cream-soft)]/70 mt-2">para la quinceañera</p>
+          <div className="h-px w-16 bg-[color:var(--gold-1)]/60 mx-auto mt-3" />
+        </div>
+
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+          {dressCode.reserved.map((c) => (
+            <div
+              key={c.name}
+              className="palette-swatch relative ring-1 ring-[color:var(--gold-1)]/60"
+              style={{ background: c.hex.startsWith('linear') ? c.hex : c.hex }}
+            >
+              <div className="absolute inset-0 flex flex-col justify-end p-4">
+                <p className="font-sans tracking-wider-xs text-xs font-semibold uppercase" style={{ color: c.text }}>{c.name}</p>
+                <p className="font-serif-body italic text-sm" style={{ color: c.text, opacity: 0.85 }}>{c.role}</p>
+              </div>
+              <Sparkles size={18} className="absolute top-3 right-3" style={{ color: c.text, opacity: 0.85 }} />
+            </div>
+          ))}
         </div>
       </div>
     </section>

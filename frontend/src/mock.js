@@ -29,7 +29,7 @@ export const mockData = {
   },
   gallery: [null, null, null, null], // photo placeholders
   dressCode: {
-    title: 'EL WESTERN',
+    title: 'EL WESTERN O VAQUEROS ELEGANTES',
     subtitle: 'es opcional',
     items: [
       { icon: 'hat', label: 'Sombreros' },
@@ -37,13 +37,14 @@ export const mockData = {
       { icon: 'sparkle', label: 'Detalles' },
     ],
     palette: [
-      { name: 'Verde Botella', role: 'Color principal', hex: '#0e3b2e', text: '#f5e6c8' },
       { name: 'Beige Arena', role: 'Neutro c\u00e1lido', hex: '#e8dcc0', text: '#5a4a2f' },
       { name: 'Caf\u00e9 Oscuro', role: 'Acento r\u00fastico', hex: '#4a2a15', text: '#f5e6c8' },
       { name: 'Negro Elegante', role: 'Base formal', hex: '#0a0a0a', text: '#f5e6c8' },
+    ],
+    reserved: [
+      { name: 'Verde Botella', role: 'Color principal', hex: '#0e3b2e', text: '#f5e6c8' },
       { name: 'Dorado', role: 'Detalle premium', hex: 'linear-gradient(135deg,#d4af37,#f4e1a4,#c9a227)', text: '#3a2a05' },
     ],
-    note: 'Nota: Evitar colores blanco, rojo o rosa intenso. Los colores reservados para la quincea\u00f1era son el verde botella y el dorado.',
   },
   rsvp: {
     whatsappNumber: '5215555555555', // placeholder - editar cuando se tenga el número real
