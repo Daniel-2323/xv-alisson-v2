@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ImageIcon, MapPin, Calendar, Clock, MapPinned, Sparkles, Info, Church, GlassWater, Utensils, Heart, Music } from 'lucide-react';
+import { ImageIcon, MapPin, Calendar, Clock, MapPinned, Sparkles, Info, Church, GlassWater, Utensils, Heart, Music, Instagram, MessageCircle } from 'lucide-react';
 import { GoldDivider, OrnamentArch, FloatingParticles } from '../Decorations';
 import { Reveal } from '../Effects';
 import { mockData } from '../../mock';
@@ -302,16 +302,51 @@ export const Footer = () => {
   return (
     <footer className="relative section-bg py-16 overflow-hidden grain">
       <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
-        <div className="flex justify-center mb-4"><OrnamentArch size={50} /></div>
-        <p className="section-eyebrow">Con toda mi ilusión</p>
-        <h3 className="font-serif-display italic text-3xl md:text-4xl text-gold-gradient mt-3">
-          {quinceanera.firstName} {quinceanera.middleName}
-        </h3>
-        <p className="font-sans tracking-widest-xl text-xs text-[color:var(--cream-soft)]/70 mt-2">{quinceanera.familyLine}</p>
-        <div className="h-px w-24 bg-[color:var(--gold-1)]/50 mx-auto my-6" />
-        <p className="font-serif-body italic text-[color:var(--cream-soft)]">{event.dateLabel}</p>
-        <p className="font-sans text-[10px] tracking-widest-xl text-[color:var(--cream-soft)]/40 mt-8 uppercase">
-          Hecho con cariño • Invitación Digital
+        {/* Top: hat + name */}
+        <div className="flex items-center justify-center gap-3">
+          <svg width="34" height="26" viewBox="0 0 60 44" fill="none" className="text-[color:var(--gold-1)]" aria-hidden>
+            <path d="M18 24 Q22 8 30 8 Q38 8 42 24" stroke="currentColor" strokeWidth="2" fill="currentColor" fillOpacity="0.35" />
+            <path d="M6 30 Q30 40 54 30 Q54 34 30 38 Q6 34 6 30 Z" stroke="currentColor" strokeWidth="2" fill="currentColor" fillOpacity="0.35" />
+            <path d="M18 26 Q30 22 42 26" stroke="currentColor" strokeWidth="1.2" fill="none" />
+          </svg>
+          <span className="font-serif-display italic text-2xl md:text-3xl text-gold-gradient">
+            {quinceanera.firstName} {quinceanera.middleName}
+          </span>
+        </div>
+
+        <div className="h-px w-56 bg-[color:var(--gold-1)]/40 mx-auto my-8" />
+
+        {/* Full name */}
+        <p className="font-serif-display italic text-xl md:text-2xl text-[color:var(--cream)]">
+          {quinceanera.firstName} {quinceanera.middleName} {quinceanera.lastName}
+        </p>
+        <p className="font-sans tracking-widest-xl text-[11px] text-[color:var(--cream-soft)]/80 mt-3 uppercase">
+          Hija de {quinceanera.parents.mother} &amp; {quinceanera.parents.father}
+        </p>
+        <p className="font-serif-body italic text-[color:var(--cream-soft)] mt-3">
+          {event.dayFull.replace(',', '')} · 19:00 hrs
+        </p>
+
+        <div className="h-px w-56 bg-[color:var(--gold-1)]/40 mx-auto my-8" />
+
+        {/* Social icons */}
+        <div className="flex items-center justify-center gap-6">
+          <a href="#" aria-label="Instagram" className="w-10 h-10 rounded-full border border-[color:var(--gold-1)]/40 flex items-center justify-center text-[color:var(--gold-1)] hover:bg-[color:var(--gold-1)]/10 hover:border-[color:var(--gold-1)] transition">
+            <Instagram size={18} />
+          </a>
+          <a href="#" aria-label="TikTok" className="w-10 h-10 rounded-full border border-[color:var(--gold-1)]/40 flex items-center justify-center text-[color:var(--gold-1)] hover:bg-[color:var(--gold-1)]/10 hover:border-[color:var(--gold-1)] transition">
+            {/* TikTok custom icon */}
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M9 12a4 4 0 1 0 4 4V4c.5 2.5 2.5 4.5 5 5" />
+            </svg>
+          </a>
+          <a href={`https://wa.me/${mockData.rsvp.whatsappNumber}`} aria-label="WhatsApp" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full border border-[color:var(--gold-1)]/40 flex items-center justify-center text-[color:var(--gold-1)] hover:bg-[color:var(--gold-1)]/10 hover:border-[color:var(--gold-1)] transition">
+            <MessageCircle size={18} />
+          </a>
+        </div>
+
+        <p className="font-sans tracking-widest-xl text-[10px] text-[color:var(--cream-soft)]/50 mt-10 uppercase">
+          © {new Date().getFullYear()} {quinceanera.firstName} {quinceanera.middleName} {quinceanera.lastName} · Todos los derechos reservados
         </p>
       </div>
     </footer>
