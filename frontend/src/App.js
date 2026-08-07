@@ -8,10 +8,10 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-[color:var(--bg-deep)] text-[color:var(--cream)] overflow-x-hidden">
       <Hero />
+      <QuoteSection />
       <IntroMessage />
       <Countdown />
       <VideoSection />
-      <QuoteSection />
       <WelcomeMessage />
       <Gallery />
       <Reception />
