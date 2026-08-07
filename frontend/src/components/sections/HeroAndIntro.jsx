@@ -72,9 +72,13 @@ export const IntroMessage = () => {
 };
 
 const CountBox = ({ value, label }) => (
-  <div className="flex flex-col items-center">
-    <span className="font-serif-display text-gold-gradient text-5xl md:text-6xl leading-none">{String(value).padStart(2, '0')}</span>
-    <span className="font-sans tracking-widest-xl text-[10px] text-[color:var(--gold-1)] mt-2 uppercase">{label}</span>
+  <div className="countdown-tile flex flex-col items-center justify-center">
+    <span className="font-serif-display text-gold-gradient text-5xl md:text-6xl lg:text-7xl leading-none">
+      {String(value).padStart(2, '0')}
+    </span>
+    <span className="font-sans tracking-widest-xl text-[10px] md:text-xs text-[color:var(--gold-1)] mt-3 uppercase">
+      {label}
+    </span>
   </div>
 );
 
@@ -92,16 +96,20 @@ export const Countdown = () => {
   const secs = Math.floor((diff / 1000) % 60);
 
   return (
-    <section className="relative section-bg-alt py-16 md:py-20 overflow-hidden">
+    <section className="relative section-bg-alt py-20 md:py-28 overflow-hidden">
       <FloatingParticles density="low" />
-      <div className="relative z-10 max-w-3xl mx-auto px-6">
-        <div className="countdown-card rounded-lg px-6 md:px-12 py-10">
-          <div className="grid grid-cols-4 gap-4 md:gap-8">
-            <CountBox value={days} label="Días" />
-            <CountBox value={hours} label="Horas" />
-            <CountBox value={mins} label="Min" />
-            <CountBox value={secs} label="Seg" />
-          </div>
+      <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
+        <p className="section-eyebrow">Cuenta Regresiva</p>
+        <h2 className="font-serif-display italic text-5xl md:text-6xl text-[color:var(--cream)] mt-4 leading-tight">
+          Faltan
+        </h2>
+        <div className="mt-6 mb-12"><GoldDivider variant="star" /></div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto">
+          <CountBox value={days} label="Días" />
+          <CountBox value={hours} label="Horas" />
+          <CountBox value={mins} label="Minutos" />
+          <CountBox value={secs} label="Segundos" />
         </div>
       </div>
     </section>
