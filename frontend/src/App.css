@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Lora:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
   --bg-deep: #0a1e17;
@@ -18,8 +18,8 @@ html, body, #root {
   color: var(--cream);
 }
 
-.font-serif-display { font-family: 'Playfair Display', serif; }
-.font-serif-body { font-family: 'Cormorant Garamond', serif; }
+.font-serif-display { font-family: 'Libre Baskerville', serif; }
+.font-serif-body { font-family: 'Lora', serif; }
 .font-sans { font-family: 'Inter', system-ui, sans-serif; }
 
 .tracking-wider-xs { letter-spacing: 0.18em; }

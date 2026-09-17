@@ -47,7 +47,7 @@ export const mockData = {
     ],
   },
   rsvp: {
-    whatsappNumber: '525542906352', // México: 52 + 10 dígitos
+    telegramBotUsername: 'tu_bot_de_telegram',
   },
   heroImage:
     'https://images.unsplash.com/photo-1720534670705-9f4b9315528d?auto=format&fit=crop&w=2000&q=80',
@@ -56,10 +56,7 @@ export const mockData = {
   video: {
     eyebrow: 'Mi Video',
     title: 'Un instante en mi vida',
-    // Placeholder video - replace with your own MP4 URL or YouTube embed
-    src: 'https://cdn.pixabay.com/video/2023/10/18/185725-876678964_large.mp4',
-    poster:
-      'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1600&q=80',
+    src: '/videos/XV-ALISSON.mp4',
   },
   quote: {
     text: 'Hoy dejo atrás la niñez para comenzar una nueva etapa llena de sueños, ilusiones y esperanza.',

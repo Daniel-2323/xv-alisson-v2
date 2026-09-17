@@ -5,6 +5,8 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 import secrets
+import asyncio
+import requests
 from pathlib import Path
 from pydantic import BaseModel, Field
 from typing import List, Optional
@@ -16,9 +18,13 @@ ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 # MongoDB connection
-mongo_url = os.environ['MONGO_URL']
+mongo_url = os.environ.get('MONGO_URL') or 'mongodb://127.0.0.1:27017'
 client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+db = client[os.environ.get('DB_NAME') or 'xv']
+
+# Telegram bot configuration
+TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN')
+TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID')
 
 # Admin auth
 ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'alisson2026')
@@ -42,6 +48,27 @@ async def _is_valid_token(token: Optional[str]) -> bool:
 # Create the main app
 app = FastAPI()
 api_router = APIRouter(prefix="/api")
+
+
+async def _send_telegram_message(text: str) -> None:
+    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
+        return
+
+    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+    payload = {
+        "chat_id": TELEGRAM_CHAT_ID,
+        "text": text,
+        "parse_mode": "HTML",
+    }
+
+    def send() -> None:
+        try:
+            resp = requests.post(url, json=payload, timeout=10)
+            resp.raise_for_status()
+        except Exception as exc:
+            logger.error("Telegram message failed: %s", exc)
+
+    await asyncio.to_thread(send)
 
 
 # --- Models ---
@@ -89,6 +116,17 @@ async def create_rsvp(payload: RSVPCreate):
     rsvp = RSVP(name=name, passes=payload.passes, message=(payload.message or None))
     doc = rsvp.dict()
     await db.rsvps.insert_one(doc)
+
+    if TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID:
+        telegram_text = (
+            f"✅ Nueva confirmación de RSVP\n"
+            f"Nombre: {name}\n"
+            f"Pases: {payload.passes}\n"
+            f"Mensaje: {payload.message or '—'}\n"
+            f"Fecha: {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')}"
+        )
+        await _send_telegram_message(telegram_text)
+
     return rsvp
 
 

@@ -182,35 +182,67 @@ export const RSVP = () => {
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState({ type: 'idle', text: '' });
 
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-
   const handleConfirm = async () => {
     if (!name.trim()) {
-      setStatus({ type: 'error', text: 'Por favor ingresa tu nombre.' });
-      return;
-    }
-    if (passes < 1) {
-      setStatus({ type: 'error', text: 'Debes indicar al menos 1 pase.' });
-      return;
-    }
-    setStatus({ type: 'loading', text: 'Enviando confirmación...' });
-    try {
-      const res = await fetch(`${BACKEND_URL}/api/rsvp`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: name.trim(), passes: Number(passes), message: message.trim() || null }),
+      setStatus({
+        type: 'error',
+        text: 'Por favor ingresa tu nombre.',
       });
-      if (!res.ok) throw new Error('Error al confirmar');
-      setStatus({ type: 'success', text: '¡Confirmación registrada! Serás redirigido a WhatsApp.' });
+      return;
+    }
 
-      const waText = encodeURIComponent(
-        `¡Hola! Confirmo mi asistencia a los XV años de ${quinceanera.firstName} ${quinceanera.middleName}.\nNombre: ${name}\nNúmero de pases: ${passes}${message ? `\nMensaje: ${message}` : ''}`
+    if (passes < 1) {
+      setStatus({
+        type: 'error',
+        text: 'Debes indicar al menos 1 pase.',
+      });
+      return;
+    }
+
+    setStatus({
+      type: 'loading',
+      text: 'Enviando confirmación...',
+    });
+
+    try {
+      const res = await fetch(
+        'https://xv-alisson-rsvp.odanuel658.workers.dev/api/rsvp',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: name.trim(),
+            passes: Number(passes),
+            message: message.trim() || null,
+          }),
+        }
       );
-      setTimeout(() => {
-        window.open(`https://wa.me/${rsvp.whatsappNumber}?text=${waText}`, '_blank');
-      }, 700);
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        throw new Error(data.error || 'Error al confirmar');
+      }
+
+      setStatus({
+        type: 'success',
+        text: '¡Confirmación enviada correctamente! Muchas gracias.',
+      });
+
+      // Limpiar el formulario después de confirmar
+      setName('');
+      setPasses(1);
+      setMessage('');
+
     } catch (e) {
-      setStatus({ type: 'error', text: 'No se pudo registrar. Intenta de nuevo.' });
+      console.error('Error al enviar RSVP:', e);
+
+      setStatus({
+        type: 'error',
+        text: 'No se pudo enviar la confirmación. Intenta de nuevo.',
+      });
     }
   };
 
@@ -227,7 +259,7 @@ export const RSVP = () => {
             Confirma tu <span className="block italic text-gold-gradient">Asistencia</span>
           </h2>
           <p className="font-serif-body italic text-lg text-[color:var(--cream-soft)] mt-6 max-w-md mx-auto">
-            Llena el formulario y envíanos tu confirmación. Recibirás también una copia por WhatsApp.
+            Llena el formulario y envíanos tu confirmación. Recibirás también una copia por Telegram.
           </p>
           <div className="h-px w-16 bg-[color:var(--gold-1)]/60 mx-auto mt-6" />
         </div>
@@ -238,7 +270,7 @@ export const RSVP = () => {
             <input
               type="text"
               className="field-input"
-              placeholder="Ej: Juan Carlos Martínez"
+              placeholder="Ej: Daniel S. Ojeda Flores"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -304,7 +336,10 @@ export const RSVP = () => {
           )}
 
           <p className="font-serif-body italic text-xs text-center text-[color:var(--cream-soft)]/60 mt-4">
-            Al confirmar, tu asistencia se registra y serás redirigido a WhatsApp
+            Tu confirmación ha sido recibida. ¡Gracias por acompañarnos!
+          </p>
+          <p className="font-serif-body italic text-[10px] tracking-[0.18em] uppercase text-center text-[color:var(--gold-1)]/80 mt-3">
+            Hecha y diseñada por DSOF
           </p>
         </div>
       </div>
@@ -355,9 +390,20 @@ export const Footer = () => {
               <path d="M9 12a4 4 0 1 0 4 4V4c.5 2.5 2.5 4.5 5 5" />
             </svg>
           </a>
-          <a href={`https://wa.me/${mockData.rsvp.whatsappNumber}`} aria-label="WhatsApp" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full border border-[color:var(--gold-1)]/40 flex items-center justify-center text-[color:var(--gold-1)] hover:bg-[color:var(--gold-1)]/10 hover:border-[color:var(--gold-1)] transition">
+          <a href={`https://t.me/${mockData.rsvp.telegramBotUsername}`} aria-label="Telegram" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full border border-[color:var(--gold-1)]/40 flex items-center justify-center text-[color:var(--gold-1)] hover:bg-[color:var(--gold-1)]/10 hover:border-[color:var(--gold-1)] transition">
             <MessageCircle size={18} />
           </a>
+        </div>
+
+        <div className="mt-8 flex flex-col items-center justify-center gap-2 text-[color:var(--cream-soft)]/70">
+          <p className="font-serif-body italic text-[9px] tracking-[0.22em] uppercase text-[color:var(--cream-soft)]/70">
+            Hecha y diseñada por
+          </p>
+          <div className="flex items-center gap-2 rounded-full border border-[color:var(--gold-1)]/20 bg-[color:var(--gold-1)]/5 px-3 py-1.5">
+            <span className="text-[8px] font-serif-display italic tracking-[0.26em] text-[color:var(--gold-1)]/80 uppercase">
+              DSOF
+            </span>
+          </div>
         </div>
 
         <p className="font-sans tracking-widest-xl text-[10px] text-[color:var(--cream-soft)]/50 mt-10 uppercase">
