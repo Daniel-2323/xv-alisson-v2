@@ -172,12 +172,12 @@ export const VideoSection = () => {
         </h2>
         <div className="mt-6 mb-12"><GoldDivider variant="star" /></div>
 
-        <div className="relative rounded-xl overflow-hidden border border-[color:var(--gold-1)]/25 shadow-[0_20px_60px_rgba(0,0,0,0.55)]">
+        <div className="relative rounded-xl overflow-hidden border border-[color:var(--gold-1)]/25 bg-black shadow-[0_20px_60px_rgba(0,0,0,0.55)]">
           <video
             ref={ref}
             src={video.src}
             poster={video.poster}
-            className="w-full h-auto max-h-[520px] object-cover bg-black"
+            className="w-full aspect-[9/16] object-contain bg-black md:aspect-video md:max-h-[520px]"
             controls={playing}
             playsInline
             onPause={() => setPlaying(false)}

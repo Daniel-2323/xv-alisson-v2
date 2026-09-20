@@ -1,0 +1,70 @@
+{
+  "name": "tts-reader",
+  "displayName": "Lector TTS",
+  "description": "Lee en voz alta el texto seleccionado o copiado, incluidas las respuestas del chat.",
+  "version": "0.1.0",
+  "publisher": "local",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:ttsReader.readSelection",
+    "onCommand:ttsReader.readClipboard",
+    "onCommand:ttsReader.stop"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "ttsReader.readSelection",
+        "title": "Lector TTS: Leer texto seleccionado"
+      },
+      {
+        "command": "ttsReader.readClipboard",
+        "title": "Lector TTS: Leer texto copiado"
+      },
+      {
+        "command": "ttsReader.stop",
+        "title": "Lector TTS: Detener lectura"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "ttsReader.readSelection",
+        "key": "ctrl+alt+r",
+        "mac": "cmd+alt+r",
+        "when": "editorHasSelection"
+      },
+      {
+        "command": "ttsReader.readClipboard",
+        "key": "ctrl+alt+shift+r",
+        "mac": "cmd+alt+shift+r"
+      },
+      {
+        "command": "ttsReader.stop",
+        "key": "ctrl+alt+.",
+        "mac": "cmd+alt+."
+      }
+    ],
+    "configuration": {
+      "title": "Lector TTS",
+      "properties": {
+        "ttsReader.language": {
+          "type": "string",
+          "default": "es",
+          "description": "Idioma de la voz. Por ejemplo: es, en o fr."
+        },
+        "ttsReader.speed": {
+          "type": "number",
+          "default": 1,
+          "minimum": 0.5,
+          "maximum": 2,
+          "description": "Velocidad de lectura: 1 es normal."
+        }
+      }
+    }
+  }
+}
