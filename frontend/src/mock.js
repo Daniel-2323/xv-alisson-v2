@@ -16,9 +16,10 @@ export const mockData = {
     dayFull: 'Viernes, 5 de Diciembre de 2026',
     time: 'POR CONFIRMAR \u2014 Recepci\u00f3n de invitados',
     venue: 'Sal\u00f3n de Eventos',
-    venueName: 'Pendiente',
+    venueName: 'Los Cipreses Salón Tepojaco',
     address: 'Por confirmar',
-    mapsQuery: 'Pendiente',
+    mapsQuery: 'Los Cipreses Salon Tepojaco',
+    mapsUrl: 'https://maps.app.goo.gl/4vZuHUV9fuX9TGKg7',
   },
   message: {
     intro1:

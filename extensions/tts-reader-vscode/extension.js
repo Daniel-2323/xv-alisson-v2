@@ -1,7 +1,16 @@
 const vscode = require('vscode');
 const { spawn } = require('child_process');
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
 
 let activeSpeech;
+let temporaryAudioPath;
+let speechId = 0;
+
+const piperDirectory = path.join(os.homedir(), '.local', 'share', 'tts-reader-piper');
+const piperBinary = path.join(piperDirectory, 'bin', 'piper');
+const piperModel = path.join(piperDirectory, 'voices', 'es_MX-claude-high.onnx');
 
 function selectedText() {
   const editor = vscode.window.activeTextEditor;
@@ -10,10 +19,55 @@ function selectedText() {
 }
 
 function stopSpeaking() {
+  speechId += 1;
   if (activeSpeech && !activeSpeech.killed) {
     activeSpeech.kill();
   }
   activeSpeech = undefined;
+  if (temporaryAudioPath) {
+    fs.rm(temporaryAudioPath, { force: true }, () => {});
+    temporaryAudioPath = undefined;
+  }
+}
+
+function playWithPiper(content, speed) {
+  if (!fs.existsSync(piperBinary) || !fs.existsSync(piperModel)) {
+    vscode.window.showErrorMessage('Lector TTS: no se encontró la voz neuronal local de Piper.');
+    return;
+  }
+
+  stopSpeaking();
+  const currentSpeechId = ++speechId;
+  temporaryAudioPath = path.join(os.tmpdir(), `tts-reader-${Date.now()}.wav`);
+  const lengthScale = String((1 / speed).toFixed(2));
+  activeSpeech = spawn(piperBinary, [
+    '--model', piperModel,
+    '--output_file', temporaryAudioPath,
+    '--length-scale', lengthScale
+  ]);
+
+  activeSpeech.on('error', () => {
+    if (currentSpeechId === speechId) {
+      vscode.window.showErrorMessage('Lector TTS: no se pudo iniciar la voz neuronal de Piper.');
+      stopSpeaking();
+    }
+  });
+
+  activeSpeech.on('close', (code) => {
+    if (currentSpeechId !== speechId || code !== 0 || !temporaryAudioPath) return;
+    activeSpeech = spawn('paplay', [temporaryAudioPath]);
+    activeSpeech.on('error', () => {
+      if (currentSpeechId === speechId) {
+        vscode.window.showErrorMessage('Lector TTS: no se pudo reproducir el audio generado.');
+        stopSpeaking();
+      }
+    });
+    activeSpeech.on('close', () => {
+      if (currentSpeechId === speechId) stopSpeaking();
+    });
+  });
+
+  activeSpeech.stdin.end(content);
 }
 
 function speak(text) {
@@ -28,6 +82,12 @@ function speak(text) {
   const language = settings.get('language', 'es');
   const speed = Number(settings.get('speed', 1));
   const wordsPerMinute = String(Math.round(175 * speed));
+
+  if (process.platform === 'linux') {
+    playWithPiper(content, speed);
+    return;
+  }
+
   let command;
   let args;
   let options = {};
@@ -49,9 +109,6 @@ function speak(text) {
         TTS_READER_RATE: String(Math.round((speed - 1) * 5))
       }
     };
-  } else {
-    command = 'espeak-ng';
-    args = ['-v', language, '-s', wordsPerMinute, content];
   }
 
   activeSpeech = spawn(command, args, options);

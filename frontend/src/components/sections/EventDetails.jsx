@@ -74,7 +74,7 @@ export const Reception = () => {
             ))}
 
             <a
-              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.mapsQuery)}`}
+              href={event.mapsUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.mapsQuery)}`}
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 mt-2 btn-gold-outline"
