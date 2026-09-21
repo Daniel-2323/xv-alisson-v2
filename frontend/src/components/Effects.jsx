@@ -100,9 +100,25 @@ export const MusicToggle = ({ src = 'https://customer-assets-gfyr7b9c.emergentag
   useEffect(() => {
     const audio = new Audio(src);
     audio.loop = true;
+    audio.preload = 'auto';
     audio.volume = 0.35;
     audioRef.current = audio;
+
+    // Los navegadores bloquean el audio automático. La primera interacción
+    // (toque o clic) concede el permiso para iniciar la música.
+    const startOnFirstInteraction = () => {
+      const playPromise = audio.play();
+      if (playPromise && typeof playPromise.then === 'function') {
+        playPromise.then(() => setPlaying(true)).catch(() => setPlaying(false));
+      } else {
+        setPlaying(true);
+      }
+    };
+
+    document.addEventListener('pointerdown', startOnFirstInteraction, { once: true });
+
     return () => {
+      document.removeEventListener('pointerdown', startOnFirstInteraction);
       audio.pause();
       audioRef.current = null;
     };
