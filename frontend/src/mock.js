@@ -17,7 +17,7 @@ export const mockData = {
     time: 'POR CONFIRMAR \u2014 Recepci\u00f3n de invitados',
     venue: 'Sal\u00f3n de Eventos',
     venueName: 'Los Cipreses Salón Tepojaco',
-    address: 'Por confirmar',
+    address: 'Miguel Hidalgo Manzana 019, San Francisco Tepojaco, 54745 Cuautitlán Izcalli, Méx.',
     mapsQuery: 'Los Cipreses Salon Tepojaco',
     mapsUrl: 'https://maps.app.goo.gl/4vZuHUV9fuX9TGKg7',
   },
@@ -53,7 +53,7 @@ export const mockData = {
   heroImage:
     'https://images.unsplash.com/photo-1720534670705-9f4b9315528d?auto=format&fit=crop&w=2000&q=80',
   venueImage:
-    'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=80',
+    '/images/los-cipreses-fachada.jpg',
   video: {
     eyebrow: 'Mi Video',
     title: 'Un instante en mi vida',

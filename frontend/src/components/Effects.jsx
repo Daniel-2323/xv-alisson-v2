@@ -93,8 +93,9 @@ export const Reveal = ({ children, className = '', delay = 0 }) => {
 };
 
 // Floating music toggle button (bottom-left)
-export const MusicToggle = ({ src = 'https://customer-assets-gfyr7b9c.emergentagent.net/job_recreate-design/artifacts/nnm5pj39_DUKI%2C%20Bizarrap%20-%20Buscarte%20Lejos_instrumental.mp3' }) => {
+export const MusicToggle = ({ src = '/audio/musica-instrumental.mp3' }) => {
   const audioRef = useRef(null);
+  const startedRef = useRef(false);
   const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
@@ -104,21 +105,40 @@ export const MusicToggle = ({ src = 'https://customer-assets-gfyr7b9c.emergentag
     audio.volume = 0.35;
     audioRef.current = audio;
 
-    // Los navegadores bloquean el audio automático. La primera interacción
-    // (toque o clic) concede el permiso para iniciar la música.
+    const interactionEvents = ['pointerdown', 'touchstart', 'click', 'keydown'];
+
+    const removeInteractionListeners = () => {
+      interactionEvents.forEach((eventName) => {
+        document.removeEventListener(eventName, startOnFirstInteraction, true);
+      });
+    };
+
+    // Los navegadores bloquean el audio automático. El primer toque, clic o
+    // tecla concede el permiso para iniciar la música en móvil y escritorio.
     const startOnFirstInteraction = () => {
+      if (startedRef.current) return;
       const playPromise = audio.play();
       if (playPromise && typeof playPromise.then === 'function') {
-        playPromise.then(() => setPlaying(true)).catch(() => setPlaying(false));
+        playPromise
+          .then(() => {
+            startedRef.current = true;
+            setPlaying(true);
+            removeInteractionListeners();
+          })
+          .catch(() => setPlaying(false));
       } else {
+        startedRef.current = true;
         setPlaying(true);
+        removeInteractionListeners();
       }
     };
 
-    document.addEventListener('pointerdown', startOnFirstInteraction, { once: true });
+    interactionEvents.forEach((eventName) => {
+      document.addEventListener(eventName, startOnFirstInteraction, true);
+    });
 
     return () => {
-      document.removeEventListener('pointerdown', startOnFirstInteraction);
+      removeInteractionListeners();
       audio.pause();
       audioRef.current = null;
     };

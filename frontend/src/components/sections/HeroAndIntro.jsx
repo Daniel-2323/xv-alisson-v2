@@ -177,7 +177,7 @@ export const VideoSection = () => {
             ref={ref}
             src={video.src}
             poster={video.poster}
-            className="w-full aspect-[9/16] object-contain bg-black md:aspect-video md:max-h-[520px]"
+            className="w-full aspect-video object-contain bg-black md:max-h-[520px]"
             controls={playing}
             playsInline
             onPause={() => setPlaying(false)}

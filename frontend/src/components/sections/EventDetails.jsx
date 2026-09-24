@@ -259,7 +259,7 @@ export const RSVP = () => {
             Confirma tu <span className="block italic text-gold-gradient">Asistencia</span>
           </h2>
           <p className="font-serif-body italic text-lg text-[color:var(--cream-soft)] mt-6 max-w-md mx-auto">
-            Llena el formulario y envíanos tu confirmación. Recibirás también una copia por Telegram.
+            Llena el formulario y presiona el botón para confirmar. Tu confirmación quedará registrada.
           </p>
           <div className="h-px w-16 bg-[color:var(--gold-1)]/60 mx-auto mt-6" />
         </div>
