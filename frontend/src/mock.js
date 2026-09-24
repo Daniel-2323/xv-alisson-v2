@@ -12,8 +12,8 @@ export const mockData = {
   },
   event: {
     dateISO: '2026-12-05T20:00:00',
-    dateLabel: 'Viernes 5 \u00b7 Diciembre \u00b7 2026',
-    dayFull: 'Viernes, 5 de Diciembre de 2026',
+    dateLabel: 'S\u00e1bado 5 \u00b7 Diciembre \u00b7 2026',
+    dayFull: 'S\u00e1bado, 5 de Diciembre de 2026',
     time: 'POR CONFIRMAR \u2014 Recepci\u00f3n de invitados',
     venue: 'Sal\u00f3n de Eventos',
     venueName: 'Los Cipreses Salón Tepojaco',
